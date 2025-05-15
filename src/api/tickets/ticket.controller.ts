@@ -25,7 +25,7 @@ export class TicketController {
         throw new BadRequestError("ID должно быть числом");
       }
       const updatedTicket = await this.ticketService.takeTicketInProgress(id);
-      res.status(201).json(updatedTicket);
+      res.status(200).json(updatedTicket);
     } catch (error) {
       next(error);
     }
@@ -39,7 +39,7 @@ export class TicketController {
         id,
         completeTicketDto
       );
-      res.status(201).json(updatedTicket);
+      res.status(200).json(updatedTicket);
     } catch (error) {
       next(error);
     }
@@ -53,7 +53,7 @@ export class TicketController {
         id,
         cancelTicketDto
       );
-      res.status(201).json(updateTicket);
+      res.status(200).json(updateTicket);
     } catch (error) {
       next(error);
     }
@@ -71,7 +71,7 @@ export class TicketController {
       const result = await this.ticketService.cancelAllTicketInProgress(
         cancellationReason
       );
-      res.status(201).json(result);
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -79,9 +79,9 @@ export class TicketController {
 
   async getAllTickets(req: Request, res: Response, next: NextFunction) {
     try {
-      const filterTicketsDto = req.body as FilterTicketsDto;
+      const filterTicketsDto = req.query as FilterTicketsDto;
       const tickets = await this.ticketService.getAllTickets(filterTicketsDto);
-      res.status(201).json(tickets);
+      res.status(200).json(tickets);
     } catch (error) {
       next(error);
     }
