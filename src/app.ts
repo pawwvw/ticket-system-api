@@ -1,6 +1,7 @@
 import express, {
   Application,
   ErrorRequestHandler,
+  NextFunction,
   Request,
   Response,
 } from "express";
@@ -16,7 +17,8 @@ app.use("/api/tickets", ticketRoutes);
 const globalErrorHandler: ErrorRequestHandler = (
   err: Error,
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({ status: "error", message: err.message });

@@ -71,9 +71,10 @@ export class TicketController {
     next: NextFunction
   ) {
     try {
-      const cancellationReason = req.body.cancellationReason as
-        | string
-        | undefined;
+      let cancellationReason: string | undefined = undefined;
+      if (req.body && typeof req.body.cancellationReason === "string") {
+        cancellationReason = req.body.cancellationReason;
+      }
       const result = await this.ticketService.cancelAllTicketInProgress(
         cancellationReason
       );
@@ -85,7 +86,8 @@ export class TicketController {
 
   async getAllTickets(req: Request, res: Response, next: NextFunction) {
     try {
-      const filterTicketsDto = req.query as FilterTicketsDto;
+      const filterTicketsDto = res.locals
+        .validatedQuery as unknown as FilterTicketsDto;
       const tickets = await this.ticketService.getAllTickets(filterTicketsDto);
       res.status(200).json(tickets);
     } catch (error) {

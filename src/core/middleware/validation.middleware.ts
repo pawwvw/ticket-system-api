@@ -12,7 +12,7 @@ export const validationMiddleware = <T extends object>(
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    const dataToValidate = req[valueSource];
+    const dataToValidate = req[valueSource] || {};
     const dtoInstance = plainToInstance(dtoClass, dataToValidate);
     const errors: ValidationError[] = await validate(dtoInstance, {
       whitelist: true,
@@ -21,7 +21,13 @@ export const validationMiddleware = <T extends object>(
     if (errors.length > 0) {
       throw new BadRequestError(`Ошибка валидации ${errors}`);
     } else {
-      req[valueSource] = dtoInstance;
+      if (valueSource === "query") {
+        res.locals.validatedQuery = dtoInstance;
+      } else if (valueSource === "body") {
+        req.body = dtoInstance;
+      } else if (valueSource === "params") {
+        res.locals.validatedParams = dtoInstance;
+      }
       next();
     }
   };
