@@ -78,7 +78,7 @@ export class TicketService {
   }
 
   public async cancelAllTicketInProgress(
-    cancellationReason: string
+    cancellationReason: string | undefined
   ): Promise<{ cancelledCount: number; ids: number[] }> {
     const ticketsToCancelQuery = await prisma.ticket.findMany({
       where: { status: TicketStatus.IN_PROGRESS },
