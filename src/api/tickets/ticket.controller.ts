@@ -34,6 +34,9 @@ export class TicketController {
   async completeTicket(req: Request, res: Response, next: NextFunction) {
     try {
       const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        throw new BadRequestError("ID должно быть числом");
+      }
       const completeTicketDto = req.body as CompleteTicketDto;
       const updatedTicket = await this.ticketService.completeTicket(
         id,
@@ -48,6 +51,9 @@ export class TicketController {
   async cancelTicket(req: Request, res: Response, next: NextFunction) {
     try {
       const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        throw new BadRequestError("ID должно быть числом");
+      }
       const cancelTicketDto = req.body as CancelTicketDto;
       const updateTicket = await this.ticketService.cancelTicket(
         id,
