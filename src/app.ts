@@ -47,5 +47,6 @@ const globalErrorHandler: ErrorRequestHandler = (
 };
 
 app.use(globalErrorHandler);
+app.use(express.json({ limit: "5mb" }));
 
 export default app;
