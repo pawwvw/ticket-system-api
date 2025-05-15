@@ -5,10 +5,13 @@ import express, {
   Response,
 } from "express";
 import { ApiError } from "./core/errors/api-errors";
+import ticketRoutes from "./api/tickets/ticket.routes";
 
 const app: Application = express();
 
 app.use(express.json());
+
+app.use("/api/tickets", ticketRoutes);
 
 const globalErrorHandler: ErrorRequestHandler = (
   err: Error,
